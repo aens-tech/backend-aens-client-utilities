@@ -7,6 +7,9 @@ import cookieParser from 'cookie-parser';
 import authRoutes from '@/routes/auth.routes';
 import elevateRoutes from "@/routes/elevate.routes";
 import utilityRouter from '@/routes/utility.routes';
+
+import cors from "cors"
+import { hostname } from 'os';
 // import './types/express';
 
 dotenv.config();
@@ -16,6 +19,8 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors())
+
 
 app.use('/auth', authRoutes);
 app.use('/elevate', elevateRoutes)
@@ -27,7 +32,7 @@ app.get("/", (req: Request, res: Response) => {
 
 dbConnection()
 
-app.listen(port, () => {
+app.listen({port, hostname: "http://0.0.0.0"}, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
 

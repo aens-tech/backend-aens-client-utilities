@@ -56,12 +56,9 @@ const createUtility = async (req: Request, res: Response) => {
 
 const getUtily = async (req: Request, res: Response) => {
     const {
-        slug
-    } = req.query
-
-    const {
+        slug,
         userEmail
-    } = req.body
+    } = req.query
 
     let userAlreadyIn = false
 
