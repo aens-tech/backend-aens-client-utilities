@@ -1,21 +1,21 @@
-import { INTERESTS } from '@/types/enums/enums';
+import { INTERESTS } from '@/enum/enumerators';
 import { prop, getModelForClass } from '@typegoose/typegoose';
 import * as mongoose from 'mongoose';
 
 class Contact {
-    @prop()
+    @prop({type: String})
     public name?: string;
 
-    @prop()
+    @prop({type: String})
     public email!: string;
 
-    @prop()
+    @prop({type: String})
     public phone?: string;
 
-    @prop()
+    @prop({type: Date})
     public birthday?: Date;
 
-    @prop({ required: true, enum: INTERESTS })
+    @prop({ required: true, type: String, enum: INTERESTS })
     public interests!: INTERESTS[];
 }
   

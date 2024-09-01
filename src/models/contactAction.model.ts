@@ -1,4 +1,4 @@
-import { CONTACT_ACTIONS, INTERESTS } from '@/types/enums/enums';
+import { CONTACT_ACTIONS } from '@/enum/enumerators';
 import { prop, getModelForClass } from '@typegoose/typegoose';
 import * as mongoose from 'mongoose';
 
@@ -7,12 +7,15 @@ class ContactAction {
     public userEmail!: string;
 
     @prop()
-    public summonId?: string;
+    public slug!: string;
 
     @prop()
     public date!: Date;
 
-    @prop({ required: true, enum: CONTACT_ACTIONS })
+    @prop({default: 0})
+    public timesPerformed!: number;
+
+    @prop({ required: true, type: String, enum: CONTACT_ACTIONS })
     public action!: CONTACT_ACTIONS;
 }
   

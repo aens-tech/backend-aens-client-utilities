@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 async function dbConnection() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/reservaya').then((v) => {
+  await mongoose.connect('mongodb://127.0.0.1:27017/aens-client-utilities').then((v) => {
     console.log("Connected to DB.")
   }).catch((e) => {
     console.error(e)

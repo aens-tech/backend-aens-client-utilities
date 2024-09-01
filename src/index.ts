@@ -6,6 +6,7 @@ import dbConnection from "./utils/mongodb";
 import cookieParser from 'cookie-parser';
 import authRoutes from '@/routes/auth.routes';
 import elevateRoutes from "@/routes/elevate.routes";
+import utilityRouter from '@/routes/utility.routes';
 // import './types/express';
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(cookieParser());
 
 app.use('/auth', authRoutes);
 app.use('/elevate', elevateRoutes)
+app.use('/utility', utilityRouter)
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
