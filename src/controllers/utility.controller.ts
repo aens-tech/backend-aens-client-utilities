@@ -24,8 +24,15 @@ const createUtility = async (req: Request, res: Response) => {
 
     const isTypeValid = checkEnumMatchWithString(type, UTILITY_TYPES)
 
+    
     if (!isTypeValid) {
         return res.status(400).json({message: "Not valid type of utility."})
+    }
+
+    if (type === UTILITY_TYPES.DOWNLOAD){
+        if (!url) {
+            return res.status(400).json({message: "URL is required for DOWNLOAD type."})
+        }
     }
 
     let utility
@@ -57,13 +64,15 @@ const createUtility = async (req: Request, res: Response) => {
 const getUtily = async (req: Request, res: Response) => {
     const {
         slug,
-        userEmail
+        userEmail,
+        type
     } = req.query
 
     let userAlreadyIn = false
 
     const utilityVariant = await UtilityModel.findOne({
-        slug
+        slug,
+        type
     }).lean().exec()
 
     if (!utilityVariant) {
