@@ -1,7 +1,8 @@
 import mongoose from "mongoose"
+import { MONGODB_URI } from "./env"
 
 async function dbConnection() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/aens-client-utilities').then((v) => {
+  await mongoose.connect(MONGODB_URI).then((v) => {
     console.log("Connected to DB.")
   }).catch((e) => {
     console.error(e)
