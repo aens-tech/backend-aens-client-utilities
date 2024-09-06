@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsc && tsc-alias",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts"
   },
@@ -21,7 +21,8 @@
     "express-validator": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.8.0",
-    "mongoose": "^8.5.3"
+    "mongoose": "^8.5.3",
+    "ts-node-dev": "^2.0.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -32,7 +33,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/module-alias": "^2.0.4",
     "@types/mongoose": "^5.11.97",
-    "@types/node": "^22.3.0",
+    "@types/node": "^22.5.2",
     "module-alias": "^2.2.3",
     "nodemon": "^3.1.4",
     "ts-node": "^10.9.2",

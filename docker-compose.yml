@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  aens-client-utilities-backend:
+    build: .
+    ports:
+      - "3333:3000"
+    environment:
+      - ENVIRONMENT="PROD"
+      - MASTER_KEY="8e91fe0c942c829e135f1ac3ffd4163d0732408b107aa9693e0736961208e432"
+      - MONGODB_URI="mongodb+srv://aens-client-utilities:JZO4vupLiokFZUS8@cluster0.9xtuu.mongodb.net/aens-client-utilities?retryWrites=true&w=majority&appName=Cluster0"
+      - ELEVATE_MASTER_KEY="eb1215978af6ace247ffc25de76e888c5460e79c4fe63f5f9f0fd3337c9f0c11"
+      - JWT_SECRET="c2d2df9464c75f79629ec25de772e4ae58ef56f092ce7b451d7aaf0a30004593"
+      - JWT_REFRESH_SECRET="233672d54084292817395a033ac84ae4907f1fce832f112398fa134a9935b285"
