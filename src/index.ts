@@ -24,9 +24,9 @@ app.use(cookieParser());
 app.use(cors())
 
 
-app.use('/auth', authRoutes);
-app.use('/elevate', elevateRoutes)
-app.use('/utility', utilityRouter)
+app.use('/api/auth', authRoutes);
+app.use('/api/elevate', elevateRoutes)
+app.use('/api/utility', utilityRouter)
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
