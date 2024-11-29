@@ -1,6 +1,7 @@
 import { INTERESTS, UTILITY_TYPES } from "@/enum/enumerators";
 import ContactActionModel from "@/models/contactAction.model";
 import UtilityModel from "@/models/utility.model";
+import utilityUtilities from "@/utils/controllerUtilities/utility.utilities";
 import { checkEnumMatchWithArray, checkEnumMatchWithString } from "@/utils/utils";
 import { NextFunction, Request, Response } from "express";
 import { ObjectId } from "mongodb";
@@ -16,30 +17,12 @@ const createUtility = async (req: Request, res: Response) => {
         interests
     } = req.body
 
-    const areInterestsValid =  checkEnumMatchWithArray(interests, INTERESTS)
+    const validations = utilityUtilities.isUtilityDataValid(interests, type, url);
 
-    if (!areInterestsValid) {
-        return res.status(400).json({message: "Not valid interests. Any of them was not found as an interest."})
-    }
-
-    const isTypeValid = checkEnumMatchWithString(type, UTILITY_TYPES)
-
+    if (!validations) return res.status(400).json({message: "Bad request!"})
     
-    if (!isTypeValid) {
-        return res.status(400).json({message: "Not valid type of utility."})
-    }
-
-    if (type === UTILITY_TYPES.DOWNLOAD){
-        if (!url) {
-            return res.status(400).json({message: "URL is required for DOWNLOAD type."})
-        }
-    }
-
-    let utility
-
     try {
-
-        utility = await UtilityModel.create({
+        const utility = await UtilityModel.create({
             name,
             description,
             date: new Date(date),
@@ -50,29 +33,74 @@ const createUtility = async (req: Request, res: Response) => {
             interests
         })
 
+        if (!utility) {
+            return res.status(400).json({message: "Something is wrong with the database."})
+        }
+
+        return res.status(200).json(utility)
     } catch (err) {
         return res.status(400).json({message: "Error", error: JSON.stringify(err)})
     }
 
-    if (!utility) {
-        return res.status(400).json({message: "Something is wrong with the database."})
-    }
 
-    return res.status(200).json(utility)
+}
+
+const updateUtility = async (req: Request, res: Response) => {
+    const {
+        name,
+        description,
+        date,
+        url,
+        type,
+        interests
+    } = req.body
+
+    const {
+        slug
+    } = req.params
+
+    const validations = utilityUtilities.isUtilityDataValid(interests, type, url);
+
+    if (!validations) return res.status(400).json({message: "Bad request!"})
+    
+    try {
+        const utility = await UtilityModel.findOneAndUpdate({
+            slug
+        },{
+            name,
+            description,
+            date: new Date(date),
+            isEnabled: true,
+            url,
+            type,
+            interests
+        })
+
+        if (!utility) {
+            return res.status(400).json({message: "Something is wrong with the database."})
+        }
+
+        return res.status(200).json(utility)
+    } catch (err) {
+        return res.status(400).json({message: "Error", error: JSON.stringify(err)})
+    }
 }
 
 const getUtily = async (req: Request, res: Response) => {
     const {
-        slug,
-        userEmail,
-        type
+        userEmail
     } = req.query
+
+    const {
+        slug,
+    } = req.params
 
     let userAlreadyIn = false
 
+    console.log(slug)
+
     const utilityVariant = await UtilityModel.findOne({
         slug,
-        type
     }).lean().exec()
 
     if (!utilityVariant) {
@@ -94,7 +122,30 @@ const getUtily = async (req: Request, res: Response) => {
     })
 }
 
+const getAllUtilities = async (req: Request, res: Response) => {
+    const temp = await UtilityModel.find()
+
+    return res.status(200).json({
+        data: temp
+    })
+}
+
+const removeUtility = async  (req: Request, res: Response) => {
+    const {
+        slug
+    } = req.params
+
+    const temp = await UtilityModel.deleteOne({slug})
+
+    if (!temp) return res.status(400).json({message: "Error"});
+
+    return res.status(200).json({})
+}
+
 export default {
     createUtility,
-    getUtily
+    getUtily,
+    getAllUtilities,
+    updateUtility,
+    removeUtility
 }

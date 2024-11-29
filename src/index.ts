@@ -10,6 +10,7 @@ import utilityRouter from '@/routes/utility.routes';
 
 import cors from "cors"
 import { hostname } from 'os';
+import contactActionsRouter from './routes/contactActions.routes';
 // import './types/express';
 
 dotenv.config();
@@ -27,6 +28,7 @@ app.use(cors())
 app.use('/api/auth', authRoutes);
 app.use('/api/elevate', elevateRoutes)
 app.use('/api/utility', utilityRouter)
+app.use('/api/contactActions/', contactActionsRouter)
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");

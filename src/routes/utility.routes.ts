@@ -5,7 +5,7 @@ import { body, check, param, query } from 'express-validator';
 
 import ExpressValidatorMiddleware from '@/middlewares/expressValidator.middleware';
 import ContactMiddleware from '@/middlewares/contact.middleware';
-import ContactController from '@/controllers/contact.controller';
+import ContactController from '@/controllers/contactActions.controller';
 import UtilityMiddleware from '@/middlewares/utility.middleware';
 import { createArrayOfExpressValidatorsForBodyNotEmpty } from '@/utils/utils';
 import AuthMiddleware from '@/middlewares/auth.middleware';
@@ -24,7 +24,7 @@ const utilityRouter = Router();
 utilityRouter.post('/',
     [
         ...createArrayOfExpressValidatorsForBodyNotEmpty([
-        'masterKey',
+        // 'masterKey',
         'name',
         'slug',
         'type'
@@ -33,15 +33,40 @@ utilityRouter.post('/',
         body('date').isString().isDate().withMessage('interests is required as a date.')
     ],
     ExpressValidatorMiddleware.responseWithGenericResponse,
-    AuthMiddleware.masterKeyRequired,
+    // AuthMiddleware.masterKeyRequired,
     UtilityController.createUtility
 )
 
-utilityRouter.get('/',
+
+utilityRouter.put(
+    '/:slug',
     [
-        query('slug').notEmpty().withMessage('slug is required.')
+        ...createArrayOfExpressValidatorsForBodyNotEmpty([
+        // 'masterKey',
+        'name',
+        'slug',
+        'type'
+        ]),
+        body('interests').isArray().withMessage('interests is required.'),
+        body('date').isString().isDate().withMessage('interests is required as a date.')
     ],
-    ExpressValidatorMiddleware.responseWithErrors,
+    ExpressValidatorMiddleware.responseWithGenericResponse,
+    // AuthMiddleware.masterKeyRequired,
+    UtilityController.updateUtility
+)
+
+utilityRouter.get(
+    "/",
+    UtilityController.getAllUtilities
+)
+
+utilityRouter.delete(
+    "/:slug",
+    UtilityController.removeUtility
+)
+
+utilityRouter.get(
+    "/:slug",
     UtilityController.getUtily
 )
 
