@@ -5,6 +5,7 @@ import { validationResult } from 'express-validator';
 import UserModel, { EUserRole } from '@/models/user.model';
 import bcrypt from 'bcrypt';
 import { JWT_REFRESH_SECRET, JWT_SECRET } from '@/utils/env';
+import { ObjectId } from 'mongodb';
 
 
 const login = async (req: Request, res: Response) => {
@@ -30,6 +31,16 @@ const login = async (req: Request, res: Response) => {
 
   return res.json({ message: 'Logged in successfully' });
 };
+
+const getUserData = async (req: Request, res: Response) => {
+  const {userId} = req.query
+  
+  const temp = await UserModel.findById(new ObjectId(userId as string))
+
+  if (!temp) return res.status(400).json({message: "Something wrong"})
+
+    return res.status(200).json({data: temp})
+}
 
 const register = async (req: Request, res: Response) => {
   const { name, email, password, phone } = req.body;
